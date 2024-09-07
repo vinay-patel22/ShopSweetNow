@@ -1,17 +1,19 @@
-// Header.jsx
 import React from "react";
-import { FaShoppingCart, FaUserCircle } from "react-icons/fa"; // Import icons from react-icons
-import CompanyLogo from "../images/CompanyLogo.png"; // Updated logo path
+import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import CompanyLogo from "../images/CompanyLogo.png";
 
 const Header = () => {
+  const cart = useSelector((state) => state.cart.items);
+  const cartItemCount = cart.length;
+
   return (
     <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between">
-      {/* Company Logo */}
       <div className="flex items-center">
         <img src={CompanyLogo} alt="Company Logo" className="h-12" />
       </div>
 
-      {/* Welcome Message and Slogan */}
       <div className="flex-1 text-center">
         <p className="text-2xl font-extrabold text-gray-800">
           Welcome to ShopSweetNow
@@ -21,15 +23,15 @@ const Header = () => {
         </p>
       </div>
 
-      {/* Icons */}
       <div className="flex items-center space-x-6">
-        {/* Shopping Cart Icon */}
-        <div className="relative">
+        <Link to="/cart" className="relative">
           <FaShoppingCart className="text-purple-600 text-2xl cursor-pointer" />
-          {/* Optional cart item count can be added here */}
-        </div>
-
-        {/* User Profile Icon */}
+          {cartItemCount > 0 && (
+            <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-2 py-1">
+              {cartItemCount}
+            </span>
+          )}
+        </Link>
         <FaUserCircle className="text-purple-600 text-2xl cursor-pointer" />
       </div>
     </header>
