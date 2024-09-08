@@ -1,45 +1,22 @@
 // src/components/StripePaymentForm.jsx
 import React from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { CardElement } from "@stripe/react-stripe-js";
+import useStripePayment from "../hooks/useStripePayment";
 
 const StripePaymentForm = ({ onSuccess, onError }) => {
-  const stripe = useStripe();
-  const elements = useElements();
+  const { handlePayment, stripe, elements, loading } = useStripePayment(
+    onSuccess,
+    onError
+  );
 
-  const handlePayment = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-
-    // Request to your backend to create the payment intent
-    const res = await fetch("http://localhost:3001/create-payment-intent", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ amount: 1000 }), // Replace with actual amount
-    });
-
-    const { clientSecret } = await res.json();
-
-    // Confirm card payment
-    const cardElement = elements.getElement(CardElement);
-    const paymentResult = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: cardElement,
-      },
-    });
-
-    if (paymentResult.error) {
-      onError(paymentResult.error.message);
-    } else {
-      if (paymentResult.paymentIntent.status === "succeeded") {
-        onSuccess();
-      }
-    }
+    handlePayment(1000); // Replace with actual amount
   };
 
   return (
     <form
-      onSubmit={handlePayment}
+      onSubmit={handleSubmit}
       className="stripe-payment-form bg-white p-6 rounded-lg shadow-md mb-6"
     >
       <h3 className="text-lg font-semibold mb-4">Payment Information</h3>
@@ -61,10 +38,10 @@ const StripePaymentForm = ({ onSuccess, onError }) => {
       />
       <button
         type="submit"
-        disabled={!stripe}
+        disabled={!stripe || loading}
         className="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition duration-200 ease-in-out mt-4"
       >
-        Pay Now
+        {loading ? "Processing..." : "Pay Now"}
       </button>
     </form>
   );

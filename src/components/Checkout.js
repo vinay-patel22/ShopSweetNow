@@ -1,34 +1,24 @@
 // src/components/Checkout.jsx
-import React, { useState } from "react";
+import React from "react";
 import OrderSummary from "./OrderSummary";
 import DeliveryForm from "./DeliveryForm";
 import PaymentOptions from "./PaymentOptions";
 import StripePaymentForm from "./StripePaymentForm";
 import SuccessMessage from "./SuccessMessage";
 import ErrorMessage from "./ErrorMessage";
+import useCheckout from "../hooks/useCheckout";
 
 const Checkout = () => {
-  const [deliveryDetails, setDeliveryDetails] = useState(null);
-  const [paymentOption, setPaymentOption] = useState(null);
-  const [paymentStatus, setPaymentStatus] = useState(null);
-  const [error, setError] = useState(null);
-
-  const handleDeliveryFormSubmit = (details) => {
-    setDeliveryDetails(details);
-  };
-
-  const handlePaymentOptionSelect = (option) => {
-    setPaymentOption(option);
-  };
-
-  const handlePaymentSuccess = () => {
-    setPaymentStatus("success");
-  };
-
-  const handlePaymentError = (message) => {
-    setError(message);
-    setPaymentStatus("failed");
-  };
+  const {
+    deliveryDetails,
+    paymentOption,
+    paymentStatus,
+    error,
+    handleDeliveryFormSubmit,
+    handlePaymentOptionSelect,
+    handlePaymentSuccess,
+    handlePaymentError,
+  } = useCheckout();
 
   return (
     <div className="checkout-container p-6 max-w-4xl mx-auto">
