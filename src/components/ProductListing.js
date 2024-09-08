@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Product from "./Product";
 import SearchBar from "./SearchBar";
 import FilterOptions from "./FilterOptions";
 import Pagination from "./Pagination";
 import useProducts from "../hooks/useProducts";
+import CategoryList from "./CategoryList";
 
 const ProductListing = () => {
   const dispatch = useDispatch();
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // Use updated useProducts hook to handle pagination and category logic
   const {
     items,
     filteredItems,
@@ -22,7 +26,7 @@ const ProductListing = () => {
     handleSort,
     handleReset,
     handlePageChange,
-  } = useProducts();
+  } = useProducts(selectedCategory);
 
   if (status === "loading")
     return <p className="text-center text-gray-700 mt-4">Loading...</p>;
@@ -36,7 +40,9 @@ const ProductListing = () => {
           <SearchBar onSearch={handleSearch} suggestions={items} />
           <FilterOptions onSort={handleSort} onReset={handleReset} />
         </div>
+        <CategoryList onCategorySelect={setSelectedCategory} />
       </div>
+
       {filteredItems.length === 0 && hasSearched ? (
         <p className="text-center text-gray-500 mt-4">
           Product will be updated soon...
@@ -48,11 +54,15 @@ const ProductListing = () => {
               <Product key={product.id} product={product} />
             ))}
           </div>
-          <Pagination
-            totalPages={totalPages}
-            currentPage={currentPage}
-            onPageChange={handlePageChange}
-          />
+
+          {/* Render Pagination if there are multiple pages */}
+          {totalPages > 1 && (
+            <Pagination
+              totalPages={totalPages}
+              currentPage={currentPage}
+              onPageChange={handlePageChange}
+            />
+          )}
         </>
       )}
     </>

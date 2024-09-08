@@ -6,20 +6,24 @@ import {
   setLoading,
 } from "../slices/productsSlice";
 
-const useProducts = () => {
+const useProducts = (category) => {
   const dispatch = useDispatch();
   const { items, status, error } = useSelector((state) => state.products);
   const [filteredItems, setFilteredItems] = useState([]);
   const [query, setQuery] = useState("");
   const [hasSearched, setHasSearched] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6;
+  const itemsPerPage = 6; // Number of products per page
 
   useEffect(() => {
     const fetchProducts = async () => {
       dispatch(setLoading());
       try {
-        const response = await fetch("https://fakestoreapi.com/products");
+        // Fetch products based on category (if selected)
+        const url = category
+          ? `https://fakestoreapi.com/products/category/${category}`
+          : "https://fakestoreapi.com/products";
+        const response = await fetch(url);
         const data = await response.json();
         dispatch(fetchProductsSuccess(data));
         setFilteredItems(data);
@@ -29,12 +33,18 @@ const useProducts = () => {
     };
 
     fetchProducts();
-  }, [dispatch]);
+  }, [dispatch, category]);
+
+  // Pagination calculation
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const paginatedItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
   const handleSearch = (query) => {
     setQuery(query);
     setHasSearched(true);
-    setCurrentPage(1);
+    setCurrentPage(1); // Reset to first page when searching
 
     if (query.trim() === "") {
       setFilteredItems(items);
@@ -67,11 +77,6 @@ const useProducts = () => {
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
-
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const paginatedItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
 
   return {
     items,
