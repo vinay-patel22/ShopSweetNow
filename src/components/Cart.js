@@ -107,12 +107,10 @@ const Cart = () => {
               Clear Cart
             </button>
             <button
-              onClick={() =>
-                toast.info("Checkout functionality not implemented")
-              }
+              onClick={() => navigate("/checkout")} // Navigate to checkout
               className="ml-4 bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700 transition duration-200 ease-in-out"
             >
-              Checkout
+              Proceed to Checkout
             </button>
           </div>
         </div>
