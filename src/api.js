@@ -3,10 +3,19 @@ import axios from "axios";
 
 const API_URL = "http://localhost:3001/api"; // Replace with your backend URL
 
-export const signup = (userData) =>
-  axios.post(`${API_URL}/users/signup`, userData);
-export const login = (userData) =>
-  axios.post(`${API_URL}/users/login`, userData);
+export const signup = async (userData) => {
+  const response = await axios.post(`${API_URL}/users/signup`, userData);
+  localStorage.setItem("token", response.data.token); // Store JWT
+  return response;
+};
+
+// Save token to localStorage after login/signup
+export const login = async (userData) => {
+  const response = await axios.post(`${API_URL}/users/login`, userData);
+  localStorage.setItem("token", response.data.token); // Store JWT
+  return response;
+};
+
 export const getAllUsers = (token) =>
   axios.get(`${API_URL}/users`, {
     headers: { Authorization: `Bearer ${token}` },
