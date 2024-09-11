@@ -1,4 +1,4 @@
-// src/api.js
+// api.js
 import axios from "axios";
 
 const API_URL = "http://localhost:3001/api"; // Replace with your backend URL
@@ -9,7 +9,6 @@ export const signup = async (userData) => {
   return response;
 };
 
-// Save token to localStorage after login/signup
 export const login = async (userData) => {
   const response = await axios.post(`${API_URL}/users/login`, userData);
   localStorage.setItem("token", response.data.token); // Store JWT
