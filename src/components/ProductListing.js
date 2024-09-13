@@ -25,10 +25,13 @@ const ProductListing = () => {
     handlePageChange,
   } = useProducts(selectedCategory);
 
-  if (status === "loading")
+  if (status === "loading") {
     return <p className="text-center text-gray-700 mt-4">Loading...</p>;
-  if (status === "failed")
+  }
+
+  if (status === "failed") {
     return <p className="text-center text-red-500 mt-4">Error: {error}</p>;
+  }
 
   return (
     <>

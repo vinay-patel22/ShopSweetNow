@@ -91,11 +91,12 @@ const useProducts = (selectedCategory) => {
     }
   };
 
+  // Sorting logic
   const handleSort = (sortOption) => {
     let sortedItems = [...filteredItems];
-    if (sortOption === "priceAsc") {
+    if (sortOption === "asc") {
       sortedItems.sort((a, b) => a.price - b.price);
-    } else if (sortOption === "priceDesc") {
+    } else if (sortOption === "desc") {
       sortedItems.sort((a, b) => b.price - a.price);
     }
     setFilteredItems(sortedItems);
