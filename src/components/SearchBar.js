@@ -29,7 +29,7 @@ const SearchBar = ({ onSearch, suggestions }) => {
   };
 
   const filteredSuggestions = suggestions.filter((product) =>
-    product.title.toLowerCase().includes(query.toLowerCase())
+    product.title?.toLowerCase().includes(query.toLowerCase())
   );
 
   return (
