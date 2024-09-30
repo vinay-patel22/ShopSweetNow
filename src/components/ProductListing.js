@@ -55,7 +55,6 @@ const ProductListing = () => {
             ))}
           </div>
 
-          {/* Render Pagination if there are multiple pages */}
           {totalPages > 1 && (
             <Pagination
               totalPages={totalPages}

@@ -5,7 +5,6 @@ const Contact = () => {
   return (
     <div className="bg-gray-100 py-16">
       <div className="container mx-auto px-6 lg:px-12">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-extrabold text-gray-800 mb-4 tracking-wide">
             Contact Us
@@ -16,9 +15,7 @@ const Contact = () => {
           </p>
         </div>
 
-        {/* Contact Info Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Email Section */}
           <div className="bg-white p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <div className="flex items-center">
               <FaEnvelope className="text-blue-500 text-4xl mr-4" />
@@ -29,7 +26,6 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Phone Section */}
           <div className="bg-white p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <div className="flex items-center">
               <FaPhoneAlt className="text-green-500 text-4xl mr-4" />
@@ -40,7 +36,6 @@ const Contact = () => {
             </div>
           </div>
 
-          {/* Address Section */}
           <div className="bg-white p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <div className="flex items-center">
               <FaMapMarkerAlt className="text-red-500 text-4xl mr-4" />

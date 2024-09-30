@@ -5,24 +5,17 @@ import { Link, useNavigate } from "react-router-dom";
 import CompanyLogo from "../images/CompanyLogo.png";
 
 const Header = () => {
-  const cart = useSelector((state) => state.cart.items);
-  const cartItemCount = cart.length;
+  const cartItemCount = useSelector((state) => state.cart.items.length);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   const handleProfileClick = () => {
-    if (token) {
-      navigate("/user-profile"); // Go to user profile if token exists
-    } else {
-      navigate("/login"); // Go to login if not authenticated
-    }
+    navigate(token ? "/user-profile" : "/login");
   };
 
   return (
     <header className="bg-white shadow-md py-4 px-6 flex items-center justify-between">
-      <div className="flex items-center">
-        <img src={CompanyLogo} alt="Company Logo" className="h-12" />
-      </div>
+      <img src={CompanyLogo} alt="Company Logo" className="h-12" />
 
       <div className="flex-1 text-center">
         <p className="text-2xl font-extrabold text-gray-800">
@@ -42,9 +35,10 @@ const Header = () => {
             </span>
           )}
         </Link>
-        <Link to="/user-profile" onClick={handleProfileClick}>
-          <FaUserCircle className="text-purple-600 text-2xl cursor-pointer" />
-        </Link>
+        <FaUserCircle
+          className="text-purple-600 text-2xl cursor-pointer"
+          onClick={handleProfileClick}
+        />
       </div>
     </header>
   );

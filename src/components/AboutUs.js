@@ -5,7 +5,6 @@ const About = () => {
   return (
     <div className="bg-gray-100 py-16">
       <div className="container mx-auto px-6 lg:px-12">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-extrabold text-gray-800 mb-4 tracking-wide">
             About Us
@@ -17,9 +16,7 @@ const About = () => {
           </p>
         </div>
 
-        {/* About Content Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Our Story */}
           <div className="bg-white p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <div className="text-center mb-6">
               <FaHistory className="text-blue-500 text-5xl mx-auto mb-4" />
@@ -34,7 +31,6 @@ const About = () => {
             </p>
           </div>
 
-          {/* Our Team */}
           <div className="bg-white p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <div className="text-center mb-6">
               <FaPeopleArrows className="text-green-500 text-5xl mx-auto mb-4" />
@@ -47,7 +43,6 @@ const About = () => {
             </p>
           </div>
 
-          {/* Our Vision */}
           <div className="bg-white p-8 rounded-lg shadow-lg transition duration-300 hover:shadow-xl">
             <div className="text-center mb-6">
               <FaRocket className="text-red-500 text-5xl mx-auto mb-4" />

@@ -1,4 +1,3 @@
-// src/components/Cart.js
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
@@ -7,7 +6,7 @@ import CartItem from "./CartItem";
 import CartActions from "./CartActions";
 
 const Cart = () => {
-  const navigate = useNavigate(); // Make sure this is imported and used
+  const navigate = useNavigate();
   const {
     cartItems,
     handleRemove,
@@ -48,7 +47,7 @@ const Cart = () => {
         <CartActions
           total={calculateTotal()}
           onClearCart={handleClearCart}
-          onCheckout={() => navigate("/checkout")} // Fixed here
+          onCheckout={() => navigate("/checkout")}
         />
         <Link
           to="/"

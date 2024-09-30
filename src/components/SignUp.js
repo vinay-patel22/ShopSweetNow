@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Formik, Field, Form, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import CompanyLogo from "../images/CompanyLogo.png";
 import { Link, useNavigate } from "react-router-dom";
 import { signup } from "../api";
+import CompanyLogo from "../images/CompanyLogo.png";
 
-// Validation schema using Yup
 const validationSchema = Yup.object({
   name: Yup.string()
     .min(3, "Name must be at least 3 characters")
@@ -22,6 +21,34 @@ const validationSchema = Yup.object({
     .required("Confirm password is required"),
 });
 
+const InputField = ({ name, type, placeholder, errors, touched }) => (
+  <div className="mb-6">
+    <label
+      htmlFor={name}
+      className="block text-gray-700 text-sm font-medium mb-2"
+    >
+      {placeholder}
+    </label>
+    <Field
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      className={`w-full px-4 py-2 border ${
+        errors[name] && touched[name] ? "border-red-500" : "border-gray-300"
+      } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
+        errors[name] && touched[name]
+          ? "focus:ring-red-500"
+          : "focus:ring-purple-500"
+      } transition duration-200 ease-in-out`}
+    />
+    <ErrorMessage
+      name={name}
+      component="div"
+      className="text-red-500 text-sm mt-1"
+    />
+  </div>
+);
+
 const SignUpForm = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -29,10 +56,9 @@ const SignUpForm = () => {
   const handleSubmit = async (values) => {
     try {
       await signup(values);
-      // Redirect or update state based on successful signup
       navigate("/login");
     } catch (err) {
-      setError(err.response.data.message);
+      setError(err.response?.data?.message || "Sign up failed");
     }
   };
 
@@ -57,131 +83,40 @@ const SignUpForm = () => {
         >
           {({ errors, touched }) => (
             <Form>
-              {/* Name Field */}
-              <div className="mb-6">
-                <label
-                  htmlFor="name"
-                  className="block text-gray-700 text-sm font-medium mb-2"
-                >
-                  Enter Name
-                </label>
-                <Field
-                  name="name"
-                  type="text"
-                  placeholder="Your Name"
-                  className={`w-full px-4 py-2 border ${
-                    errors.name && touched.name
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.name && touched.name
-                      ? "focus:ring-red-500"
-                      : "focus:ring-purple-500"
-                  } transition duration-200 ease-in-out`}
-                />
-                <ErrorMessage
-                  name="name"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
-
-              {/* Email Field */}
-              <div className="mb-6">
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 text-sm font-medium mb-2"
-                >
-                  Email address
-                </label>
-                <Field
-                  name="email"
-                  type="email"
-                  placeholder="Enter your email"
-                  className={`w-full px-4 py-2 border ${
-                    errors.email && touched.email
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.email && touched.email
-                      ? "focus:ring-red-500"
-                      : "focus:ring-purple-500"
-                  } transition duration-200 ease-in-out`}
-                />
-                <ErrorMessage
-                  name="email"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
-
-              {/* Password Field */}
-              <div className="mb-6">
-                <label
-                  htmlFor="password"
-                  className="block text-gray-700 text-sm font-medium mb-2"
-                >
-                  Password
-                </label>
-                <Field
-                  name="password"
-                  type="password"
-                  placeholder="Enter your password"
-                  className={`w-full px-4 py-2 border ${
-                    errors.password && touched.password
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.password && touched.password
-                      ? "focus:ring-red-500"
-                      : "focus:ring-purple-500"
-                  } transition duration-200 ease-in-out`}
-                />
-                <ErrorMessage
-                  name="password"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
-
-              {/* Confirm Password Field */}
-              <div className="mb-6">
-                <label
-                  htmlFor="confirmPassword"
-                  className="block text-gray-700 text-sm font-medium mb-2"
-                >
-                  Confirm Password
-                </label>
-                <Field
-                  name="confirmPassword"
-                  type="password"
-                  placeholder="Confirm your password"
-                  className={`w-full px-4 py-2 border ${
-                    errors.confirmPassword && touched.confirmPassword
-                      ? "border-red-500"
-                      : "border-gray-300"
-                  } rounded-md shadow-sm focus:outline-none focus:ring-2 ${
-                    errors.confirmPassword && touched.confirmPassword
-                      ? "focus:ring-red-500"
-                      : "focus:ring-purple-500"
-                  } transition duration-200 ease-in-out`}
-                />
-                <ErrorMessage
-                  name="confirmPassword"
-                  component="div"
-                  className="text-red-500 text-sm mt-1"
-                />
-              </div>
-
-              {/* Submit Button */}
+              <InputField
+                name="name"
+                type="text"
+                placeholder="Enter Name"
+                errors={errors}
+                touched={touched}
+              />
+              <InputField
+                name="email"
+                type="email"
+                placeholder="Email address"
+                errors={errors}
+                touched={touched}
+              />
+              <InputField
+                name="password"
+                type="password"
+                placeholder="Password"
+                errors={errors}
+                touched={touched}
+              />
+              <InputField
+                name="confirmPassword"
+                type="password"
+                placeholder="Confirm Password"
+                errors={errors}
+                touched={touched}
+              />
               <button
                 type="submit"
                 className="w-full py-3 px-4 bg-purple-600 text-white font-semibold rounded-md shadow-lg hover:bg-purple-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 Sign Up
               </button>
-
-              {/* Already a Member */}
               <div className="mt-6 text-center text-gray-600">
                 <p>
                   Already a Member?{" "}

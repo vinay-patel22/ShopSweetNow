@@ -1,4 +1,3 @@
-// Body.jsx
 import React from "react";
 import ProductListing from "./ProductListing";
 
