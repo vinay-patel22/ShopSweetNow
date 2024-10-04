@@ -15,6 +15,10 @@ const validationSchema = Yup.object({
     .required("Email is required"),
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
+    .matches(/[a-z]/, "Must contain at least one lowercase letter")
+    .matches(/[A-Z]/, "Must contain at least one uppercase letter")
+    .matches(/[0-9]/, "Must contain at least one number")
+    .matches(/[^a-zA-Z0-9]/, "Must contain at least one special character")
     .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -51,14 +55,18 @@ const InputField = ({ name, type, placeholder, errors, touched }) => (
 
 const SignUpForm = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       await signup(values);
       navigate("/login");
     } catch (err) {
       setError(err.response?.data?.message || "Sign up failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,6 +79,9 @@ const SignUpForm = () => {
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Create a New Account
         </h2>
+        {error && (
+          <div className="text-red-500 text-sm mb-4 text-center">{error}</div>
+        )}
         <Formik
           initialValues={{
             name: "",
@@ -113,9 +124,12 @@ const SignUpForm = () => {
               />
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-purple-600 text-white font-semibold rounded-md shadow-lg hover:bg-purple-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={loading}
+                className={`w-full py-3 px-4 ${
+                  loading ? "bg-gray-400" : "bg-purple-600"
+                } text-white font-semibold rounded-md shadow-lg hover:bg-purple-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500`}
               >
-                Sign Up
+                {loading ? "Signing Up..." : "Sign Up"}
               </button>
               <div className="mt-6 text-center text-gray-600">
                 <p>

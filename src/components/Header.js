@@ -4,13 +4,23 @@ import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import CompanyLogo from "../images/CompanyLogo.png";
 
+const ROUTES = {
+  CART: "/cart",
+  LOGIN: "/login",
+  USER_PROFILE: "/user-profile",
+};
+
 const Header = () => {
   const cartItemCount = useSelector((state) => state.cart.items.length);
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   const handleProfileClick = () => {
-    navigate(token ? "/user-profile" : "/login");
+    if (token) {
+      navigate(ROUTES.USER_PROFILE);
+    } else {
+      navigate(ROUTES.LOGIN);
+    }
   };
 
   return (
@@ -21,13 +31,13 @@ const Header = () => {
         <p className="text-2xl font-extrabold text-gray-800">
           Welcome to ShopSweetNow
         </p>
-        <p className="text-sm text-black-600">
+        <p className="text-sm text-gray-600">
           Your one-stop shop for the sweetest deals!
         </p>
       </div>
 
       <div className="flex items-center space-x-6">
-        <Link to="/cart" className="relative">
+        <Link to={ROUTES.CART} className="relative" aria-label="Shopping Cart">
           <FaShoppingCart className="text-purple-600 text-2xl cursor-pointer" />
           {cartItemCount > 0 && (
             <span className="absolute top-0 right-0 bg-red-600 text-white text-xs rounded-full px-2 py-1">
@@ -38,6 +48,7 @@ const Header = () => {
         <FaUserCircle
           className="text-purple-600 text-2xl cursor-pointer"
           onClick={handleProfileClick}
+          aria-label="User Profile"
         />
       </div>
     </header>

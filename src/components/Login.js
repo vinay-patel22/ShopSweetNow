@@ -44,15 +44,19 @@ const InputField = ({ name, type, placeholder, errors, touched }) => (
 
 const LoginForm = () => {
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (values) => {
+    setLoading(true);
     try {
       const response = await login(values);
       localStorage.setItem("token", response.data.token);
       navigate("/");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -65,6 +69,9 @@ const LoginForm = () => {
         <h2 className="text-3xl font-extrabold text-gray-800 mb-6 text-center">
           Log in to your account
         </h2>
+        {error && (
+          <div className="text-red-500 text-sm mb-4 text-center">{error}</div>
+        )}
         <Formik
           initialValues={{ email: "", password: "" }}
           validationSchema={validationSchema}
@@ -96,9 +103,12 @@ const LoginForm = () => {
               </div>
               <button
                 type="submit"
-                className="w-full py-3 px-4 bg-purple-600 text-white font-semibold rounded-md shadow-lg hover:bg-purple-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500"
+                disabled={loading}
+                className={`w-full py-3 px-4 ${
+                  loading ? "bg-gray-400" : "bg-purple-600"
+                } text-white font-semibold rounded-md shadow-lg hover:bg-purple-700 transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-purple-500`}
               >
-                Log in
+                {loading ? "Logging In..." : "Log in"}
               </button>
               <div className="mt-6 text-center text-gray-600">
                 <p>
