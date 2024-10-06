@@ -1,7 +1,8 @@
 import React from "react";
 import { FaShoppingCart, FaUserCircle } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../slices/userSlice";
 import CompanyLogo from "../images/CompanyLogo.png";
 
 const ROUTES = {
@@ -12,6 +13,7 @@ const ROUTES = {
 
 const Header = () => {
   const cartItemCount = useSelector((state) => state.cart.items.length);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -21,6 +23,11 @@ const Header = () => {
     } else {
       navigate(ROUTES.LOGIN);
     }
+  };
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
   };
 
   return (
@@ -50,6 +57,11 @@ const Header = () => {
           onClick={handleProfileClick}
           aria-label="User Profile"
         />
+        {token && (
+          <button onClick={handleLogout} className="text-red-600">
+            Logout
+          </button>
+        )}
       </div>
     </header>
   );
